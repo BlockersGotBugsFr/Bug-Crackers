@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bug Crackers</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
 
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: radial-gradient(circle at top, #1c1c1c, #0d0d0d);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+  }
+
+  p {
+    color: #aaa;
+  }
+
+  button {
+    background: #00c853;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  button:hover {
+    background: #00e676;
+    transform: scale(1.05);
+  }
+
+  #game-container {
+    display: none;
+    width: 400px;
+    height: 400px;
+    background: #222;
+    border: 3px solid #333;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    position: relative;
+    margin-top: 2rem;
+  }
+
+  .cell {
+    border: 1px solid #333;
+  }
+
+  .player {
+    width: 40px;
+    height: 40px;
+    background: #ff5252;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.15s linear;
+  }
+</style>
+</head>
+<body>
+  <div id="home-screen">
+    <h1>🐞 Bug Crackers 🪲</h1>
+    <p>Slide across the grid and crack the bugs!</p>
+    <button id="play-btn">Play</button>
+  </div>
+
+  <div id="game-container"></div>
+
+<script>
+  const playBtn = document.getElementById("play-btn");
+  const homeScreen = document.getElementById("home-screen");
+  const gameContainer = document.getElementById("game-container");
+
+  const gridSize = 10;
+  const cellSize = 40; // 400px / 10
+
+  // Player position in grid coordinates
+  let player = { x: 0, y: 0 };
+  let playerEl;
+
+  playBtn.addEventListener("click", startGame);
+
+  function startGame() {
+    homeScreen.style.display = "none";
+    gameContainer.style.display = "grid";
+
+    // Create grid cells
+    for (let i = 0; i < gridSize * gridSize; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      gameContainer.appendChild(cell);
+    }
+
+    // Add player
+    playerEl = document.createElement("div");
+    playerEl.classList.add("player");
+    gameContainer.appendChild(playerEl);
+    updatePlayerPosition();
+
+    // Listen for movement
+    document.addEventListener("keydown", handleMove);
+  }
+
+  function handleMove(e) {
+    switch (e.key) {
+      case "ArrowUp":
+        if (player.y > 0) player.y--;
+        break;
+      case "ArrowDown":
+        if (player.y < gridSize - 1) player.y++;
+        break;
+      case "ArrowLeft":
+        if (player.x > 0) player.x--;
+        break;
+      case "ArrowRight":
+        if (player.x < gridSize - 1) player.x++;
+        break;
+    }
+    updatePlayerPosition();
+  }
+
+  function updatePlayerPosition() {
+    playerEl.style.left = `${player.x * cellSize}px`;
+    playerEl.style.top = `${player.y * cellSize}px`;
+  }
+</script>
+</body>
+</html>
