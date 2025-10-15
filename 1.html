@@ -17,10 +17,6 @@
     font-family: "Inter", sans-serif;
   }
 
-  h2 {
-    margin-bottom: 1rem;
-  }
-
   #game-container {
     width: 600px;
     height: 600px;
@@ -40,8 +36,8 @@
   .player {
     width: 50px;
     height: 50px;
-    background: green;
-    border-radius: 5%;
+    background: #ff5252;
+    border-radius: 50%;
     position: absolute;
     transition: all 0.15s linear;
   }
@@ -56,10 +52,15 @@
     padding: 0.5rem 1rem;
     border-radius: 8px;
     cursor: pointer;
+    font-size: 1rem;
   }
 
   #back-btn:hover {
     background: #666;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
   }
 </style>
 </head>
@@ -69,32 +70,41 @@
   <div id="game-container"></div>
 
 <script>
-  const gridSize = 12; // 12x12 grid
-  const cellSize = 50; // Each cell = 50px
-  let player = { x: 0, y: 11 }; // Start bottom-left
+  const gridSize = 12;
+  const cellSize = 50;
+  let player = { x: 0, y: 11 };
   let playerEl;
 
   const gameContainer = document.getElementById("game-container");
 
-  // Create grid
+  // Create grid cells
   for (let i = 0; i < gridSize * gridSize; i++) {
     const cell = document.createElement("div");
     cell.classList.add("cell");
     gameContainer.appendChild(cell);
   }
 
-  // Add player
+  // Create player
   playerEl = document.createElement("div");
   playerEl.classList.add("player");
   gameContainer.appendChild(playerEl);
   updatePlayerPosition();
 
-  // Movement (left/right only)
+  // Movement: all directions (Arrow keys)
   document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft" && player.x > 0) {
-      player.x--;
-    } else if (e.key === "ArrowRight" && player.x < gridSize - 1) {
-      player.x++;
+    switch (e.key) {
+      case "ArrowLeft":
+        if (player.x > 0) player.x--;
+        break;
+      case "ArrowRight":
+        if (player.x < gridSize - 1) player.x++;
+        break;
+      case "ArrowUp":
+        if (player.y > 0) player.y--;
+        break;
+      case "ArrowDown":
+        if (player.y < gridSize - 1) player.y++;
+        break;
     }
     updatePlayerPosition();
   });
